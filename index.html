@@ -197,9 +197,10 @@ const refreshData = async () => {
   try {
     setStatus("Carregando lista...", "#333");
     const snapshot = await getDocs(collection(db, "presentes"));
+    console.log('Firestore docs count:', snapshot.size);
     currentDocs = snapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
     renderLista();
-    setStatus("Lista carregada.", "#333");
+    setStatus(`Lista carregada. ${currentDocs.length} itens encontrados.`, "#333");
   } catch (error) {
     setStatus("Erro ao carregar lista. Veja o console.", "#c0392b");
     console.error("Erro ao atualizar lista:", error);
