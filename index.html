@@ -148,6 +148,22 @@ let currentDocs = [];
 let selectedPresentId = null;
 let selectedPresentName = null;
 
+const getPresentName = (data) => {
+  if (!data) return "Presente";
+  if (typeof data.nome === "string" && data.nome.trim()) {
+    return data.nome;
+  }
+
+  const keys = Object.keys(data).filter((key) => key !== "reservado");
+  if (keys.length === 1) {
+    const value = data[keys[0]];
+    if (typeof value === "string") return value;
+    if (value && typeof value.stringValue === "string") return value.stringValue;
+  }
+
+  return keys[0] || "Presente";
+};
+
 const setStatus = (message, color = "#333") => {
   if (!status) return;
   status.textContent = message;
@@ -166,12 +182,13 @@ const renderLista = () => {
     listaDisponiveis.innerHTML = disponiveis
       .map((docItem) => {
         const data = docItem.data;
+        const nome = getPresentName(data);
         const isSelected = selectedPresentId === docItem.id;
 
         if (isSelected) {
           return `
             <div style="padding:10px;border:2px solid #c26a32;margin:5px;border-radius:8px;background:#fff7ec;">
-              <p><strong>${data.nome}</strong></p>
+              <p><strong>${nome}</strong></p>
               <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
                 <button class="confirm-button" data-id="${docItem.id}" style="padding:8px 16px;background:#2d8f2d;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">
                   Confirmar presente
@@ -202,9 +219,10 @@ const renderLista = () => {
     listaEscolhidos.innerHTML = escolhidos
       .map((docItem) => {
         const data = docItem.data;
+        const nome = getPresentName(data);
         return `
           <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <p style="margin:0;"><strong>${data.nome}</strong></p>
+            <p style="margin:0;"><strong>${nome}</strong></p>
             <span style="padding:6px 12px;background:#2d8f2d;color:white;border-radius:4px;font-size:0.95rem;">Já escolhido</span>
           </div>
         `;
@@ -230,7 +248,7 @@ const refreshData = async () => {
 window.selectPresent = (id) => {
   selectedPresentId = id;
   const match = currentDocs.find((docItem) => docItem.id === id);
-  selectedPresentName = match ? match.data.nome : null;
+  selectedPresentName = match ? getPresentName(match.data) : null;
   renderLista();
 };
 
