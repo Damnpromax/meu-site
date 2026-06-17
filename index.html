@@ -7,6 +7,47 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilo para alinhar o botão ao lado do nome do presente */
+    .presente-item {
+      padding: 12px;
+      border: 1px solid #eee;
+      margin: 5px 0;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-escolher {
+      padding: 6px 12px;
+      background: #c26a32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .btn-escolher:hover {
+      background: #a45525;
+    }
+    .badge-escolhido {
+      padding: 4px 8px;
+      background: #2d8f2d;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .texto-escolhido {
+      margin: 0;
+      color: #777;
+      text-decoration: line-through;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -30,90 +71,17 @@
     <div style="display:flex;flex-wrap:wrap;gap:16px;">
       <div style="flex:1;min-width:280px;">
         <h4 style="margin-top:0;margin-bottom:8px;">Presentes disponíveis</h4>
-        <div id="listaDisponiveis" style="display:flex;flex-direction:column;gap:10px;">
+        <div id="listaDisponiveis" style="display:flex;flex-direction:column;gap:5px;">
           <p style="text-align:center;color:#999;">Carregando presentes...</p>
         </div>
       </div>
       <div style="flex:1;min-width:280px;">
         <h4 style="margin-top:0;margin-bottom:8px;">Presentes já escolhidos</h4>
-        <div id="listaEscolhidos" style="display:flex;flex-direction:column;gap:10px;">
+        <div id="listaEscolhidos" style="display:flex;flex-direction:column;gap:5px;">
           <p style="text-align:center;color:#999;">Nenhum presente escolhido ainda.</p>
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="categoria">
-    <h3>🍳 COZINHA</h3>
-
-    <label class="item"><input type="checkbox"> Jogo de panelas</label>
-    <label class="item"><input type="checkbox"> Frigideira</label>
-    <label class="item"><input type="checkbox"> Jogo de talheres</label>
-    <label class="item"><input type="checkbox"> Jogo de pratos (raso, fundo e sobremesa)</label>
-    <label class="item"><input type="checkbox"> Copos e taças</label>
-    <label class="item"><input type="checkbox"> Xícaras de café</label>
-    <label class="item"><input type="checkbox"> Potes (tipo tupperware)</label>
-    <label class="item"><input type="checkbox"> Tábua de corte</label>
-    <label class="item"><input type="checkbox"> Facas de cozinha</label>
-    <label class="item"><input type="checkbox"> Utensílios (concha, espátula, escumadeira)</label>
-    <label class="item"><input type="checkbox"> Ralador</label>
-    <label class="item"><input type="checkbox"> Abridor de latas/garrafas</label>
-    <label class="item"><input type="checkbox"> Panos de prato</label>
-    <label class="item"><input type="checkbox"> Forma de bolo / assadeira</label>
-  </section>
-
-  <section class="categoria">
-    <h3>🛋️ SALA E DECORAÇÃO</h3>
-
-    <label class="item"><input type="checkbox"> Almofadas</label>
-    <label class="item"><input type="checkbox"> Tapete</label>
-    <label class="item"><input type="checkbox"> Cortina</label>
-    <label class="item"><input type="checkbox"> Quadros ou porta-retratos</label>
-    <label class="item"><input type="checkbox"> Vasos de planta</label>
-    <label class="item"><input type="checkbox"> Luminária / abajur</label>
-  </section>
-
-  <section class="categoria">
-    <h3>🛏️ QUARTO</h3>
-
-    <label class="item"><input type="checkbox"> Jogo de cama</label>
-    <label class="item"><input type="checkbox"> Lençóis</label>
-    <label class="item"><input type="checkbox"> Travesseiros</label>
-    <label class="item"><input type="checkbox"> Cobertor ou manta</label>
-    <label class="item"><input type="checkbox"> Cabides</label>
-  </section>
-
-  <section class="categoria">
-    <h3>🧴 BANHEIRO</h3>
-
-    <label class="item"><input type="checkbox"> Toalhas (banho e rosto)</label>
-    <label class="item"><input type="checkbox"> Tapete de banheiro</label>
-    <label class="item"><input type="checkbox"> Porta-sabonete</label>
-    <label class="item"><input type="checkbox"> Porta-escova de dentes</label>
-    <label class="item"><input type="checkbox"> Lixeira</label>
-  </section>
-
-  <section class="categoria">
-    <h3>🧹 LIMPEZA / ÁREA DE SERVIÇO</h3>
-
-    <label class="item"><input type="checkbox"> Vassoura</label>
-    <label class="item"><input type="checkbox"> Rodo</label>
-    <label class="item"><input type="checkbox"> Balde</label>
-    <label class="item"><input type="checkbox"> Pá de lixo</label>
-    <label class="item"><input type="checkbox"> Panos de chão</label>
-    <label class="item"><input type="checkbox"> Pregadores de roupa</label>
-    <label class="item"><input type="checkbox"> Cesto de roupa</label>
-  </section>
-
-  <section class="categoria">
-    <h3>❤️ EXTRAS</h3>
-
-    <label class="item"><input type="checkbox"> Liquidificador</label>
-    <label class="item"><input type="checkbox"> Cafeteira</label>
-    <label class="item"><input type="checkbox"> Sanduicheira</label>
-    <label class="item"><input type="checkbox"> Ferro de passar</label>
-    <label class="item"><input type="checkbox"> Extensão / benjamin</label>
-    <label class="item"><input type="checkbox"> Kit de ferramentas (martelo, chave de fenda)</label>
   </section>
 
 </div>
@@ -145,8 +113,6 @@ const listaEscolhidos = document.getElementById("listaEscolhidos");
 const status = document.getElementById("status");
 const refreshButton = document.getElementById("refreshButton");
 let currentDocs = [];
-let selectedPresentId = null;
-let selectedPresentName = null;
 
 const getPresentName = (data, id = "Presente") => {
   if (!data) return id;
@@ -154,33 +120,10 @@ const getPresentName = (data, id = "Presente") => {
   if (typeof data.name === "string" && data.name.trim()) return data.name.trim();
 
   const keys = Object.keys(data).filter((key) => key !== "reservado");
-  if (keys.length === 1) {
-    const key = keys[0];
-    const value = data[key];
-    if (typeof value === "string") {
-      const trimmed = value.trim();
-      if (trimmed === "" || trimmed.toLowerCase() === "false" || trimmed.toLowerCase() === "true") {
-        return key;
-      }
-      return trimmed;
-    }
-    if (value && typeof value.stringValue === "string") {
-      const trimmed = value.stringValue.trim();
-      if (trimmed === "" || trimmed.toLowerCase() === "false" || trimmed.toLowerCase() === "true") {
-        return key;
-      }
-      return trimmed;
-    }
-    return key;
-  }
-
   for (const key of keys) {
     const value = data[key];
     if (typeof value === "string" && value.trim()) return value.trim();
-    if (value && typeof value.stringValue === "string" && value.stringValue.trim()) return value.stringValue.trim();
   }
-
-  if (keys.length > 0) return keys[0];
   return id;
 };
 
@@ -202,29 +145,11 @@ const renderLista = () => {
     listaDisponiveis.innerHTML = disponiveis
       .map((docItem) => {
         const nome = getPresentName(docItem.data, docItem.id);
-        const isSelected = selectedPresentId === docItem.id;
-
-        if (isSelected) {
-          return `
-            <div style="padding:10px;border:2px solid #c26a32;margin:5px;border-radius:8px;background:#fff7ec;">
-              <p><strong>${nome}</strong></p>
-              <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
-                <button class="confirm-button" data-id="${docItem.id}" style="padding:8px 16px;background:#2d8f2d;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">
-                  Confirmar presente
-                </button>
-                <button class="cancel-button" style="padding:8px 16px;background:#999;color:white;border:none;border-radius:4px;cursor:pointer;">
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          `;
-        }
-
         return `
-          <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#fff;">
-            <p><strong>${nome}</strong></p>
-            <button class="select-button" data-id="${docItem.id}" style="padding:8px 16px;background:#c26a32;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">
-              Marcar para confirmar
+          <div class="presente-item">
+            <p style="margin:0;"><strong>${nome}</strong></p>
+            <button class="instant-confirm-button" data-id="${docItem.id}" data-nome="${nome}">
+              Escolher
             </button>
           </div>
         `;
@@ -239,9 +164,9 @@ const renderLista = () => {
       .map((docItem) => {
         const nome = getPresentName(docItem.data, docItem.id);
         return `
-          <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <p style="margin:0;"><strong>${nome}</strong></p>
-            <span style="padding:6px 12px;background:#2d8f2d;color:white;border-radius:4px;font-size:0.95rem;">Já escolhido</span>
+          <div class="presente-item" style="background:#f9f9f9;">
+            <p class="texto-escolhido"><strong>${nome}</strong></p>
+            <span class="badge-colhido">Escolhido</span>
           </div>
         `;
       })
@@ -255,96 +180,53 @@ const refreshData = async () => {
     const snapshot = await getDocs(collection(db, "presentes"));
     currentDocs = snapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
     renderLista();
-    setStatus(`Lista carregada. ${currentDocs.length} itens encontrados.`, "#333");
+    setStatus("Lista atualizada.", "#333");
   } catch (error) {
-    setStatus("Erro ao carregar lista. Veja o console.", "#c0392b");
-    console.error("Erro ao atualizar lista:", error);
+    setStatus("Erro ao carregar lista.", "#c0392b");
+    console.error(error);
   }
 };
 
 const confirmPresent = async (id) => {
   if (!id) return;
   try {
-    setStatus("Confirmando presente...", "#333");
+    setStatus("Salvando sua escolha...", "#333");
     const documento = doc(db, "presentes", id);
     await updateDoc(documento, { reservado: true });
-    selectedPresentId = null;
-    selectedPresentName = null;
     await refreshData();
-    setStatus("Presente confirmado!", "#2d8f2d");
+    setStatus("Presente escolhido com sucesso! Obrigado! ❤️", "#2d8f2d");
   } catch (error) {
-    setStatus("Erro ao confirmar presente. Veja o console.", "#c0392b");
-    console.error("Erro ao confirmar presente:", error);
+    setStatus("Erro ao salvar escolha.", "#c0392b");
+    console.error(error);
   }
 };
 
-window.selectPresent = (id) => {
-  selectedPresentId = id;
-  const match = currentDocs.find((docItem) => docItem.id === id);
-  selectedPresentName = match ? getPresentName(match.data) : null;
-  renderLista();
-};
-
-window.cancelSelection = () => {
-  selectedPresentId = null;
-  selectedPresentName = null;
-  renderLista();
-};
-
-window.getPresentName = getPresentName;
-
-refreshButton?.addEventListener("click", refreshData);
-
-window.confirmPresent = confirmPresent;
-
+// Evento que escuta o clique no botão "Escolher" e envia direto para o Firebase
 listaDisponiveis?.addEventListener('click', (event) => {
-  const button = event.target.closest('button');
+  const button = event.target.closest('.instant-confirm-button');
   if (!button) return;
 
-  if (button.classList.contains('select-button')) {
-    window.selectPresent(button.dataset.id);
-    return;
-  }
+  const id = button.dataset.id;
+  const nomePresente = button.dataset.nome;
 
-  if (button.classList.contains('confirm-button')) {
-    window.confirmPresent(button.dataset.id);
-    return;
-  }
-
-  if (button.classList.contains('cancel-button')) {
-    window.cancelSelection();
-    return;
+  const perguntar = confirm(`Você deseja mesmo escolher o presente: "${nomePresente}"?`);
+  if (perguntar) {
+    confirmPresent(id);
   }
 });
 
 const loadData = async () => {
-  try {
-    setStatus("Conectando ao Firestore...", "#333");
-    await refreshData();
-    setStatus("Lista carregada. Tentando realtime...", "#333");
-
-    onSnapshot(collection(db, "presentes"), (snapshot) => {
-      currentDocs = snapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
-      renderLista();
-      setStatus("Lista de presentes carregada em tempo real.", "#333");
-    }, (error) => {
-      setStatus("Realtime falhou. Lista carregada manualmente.", "#c0392b");
-      console.error("Erro onSnapshot:", error);
-    });
-  } catch (error) {
-    setStatus("Erro ao conectar ao Firestore. Veja o console.", "#c0392b");
-    console.error("Erro ao inicializar conexão:", error);
-  }
+  await refreshData();
+  
+  // Realtime ligado: se outra pessoa escolher em outro celular, atualiza na hora
+  onSnapshot(collection(db, "presentes"), (snapshot) => {
+    currentDocs = snapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
+    renderLista();
+  });
 };
 
-window.loadData = loadData;
-
-refreshButton?.addEventListener('click', () => {
-  refreshData();
-});
-
 loadData();
+refreshButton?.addEventListener('click', refreshData);
 </script>
-
 </body>
 </html>
