@@ -195,15 +195,15 @@ const renderLista = () => {
     .join("");
 
   lista.querySelectorAll('.select-button').forEach((button) => {
-    button.addEventListener('click', () => selectPresent(button.dataset.id));
+    button.addEventListener('click', () => window.selectPresent(button.dataset.id));
   });
 
   lista.querySelectorAll('.confirm-button').forEach((button) => {
-    button.addEventListener('click', () => confirmPresent(button.dataset.id));
+    button.addEventListener('click', () => window.confirmPresent(button.dataset.id));
   });
 
   lista.querySelectorAll('.cancel-button').forEach((button) => {
-    button.addEventListener('click', cancelSelection);
+    button.addEventListener('click', () => window.cancelSelection());
   });
 };
 
