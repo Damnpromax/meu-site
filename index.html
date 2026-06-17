@@ -148,7 +148,7 @@ const renderLista = () => {
 
   lista.innerHTML = currentDocs
     .map((docItem) => {
-      const data = docItem.data();
+      const data = docItem.data;
       const isReserved = data.reservado === true;
       const isSelected = selectedPresentId === docItem.id;
 
@@ -182,7 +182,7 @@ const renderLista = () => {
       return `
         <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#fff;">
           <p><strong>${data.nome}</strong></p>
-          <button style="padding:8px 16px;background:#c26a32;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.selectPresent('${docItem.id}', ${JSON.stringify(data.nome)})">
+          <button style="padding:8px 16px;background:#c26a32;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.selectPresent('${docItem.id}', '${data.nome.replace(/'/g, "\\'")}')">
             Marcar para confirmar
           </button>
         </div>
@@ -222,7 +222,7 @@ const loadData = async () => {
   try {
     setStatus("Conectando ao Firestore...", "#333");
     onSnapshot(collection(db, "presentes"), async (snapshot) => {
-      currentDocs = snapshot.docs;
+      currentDocs = snapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
       renderLista();
       setStatus("Lista de presentes carregada.", "#333");
     }, async (error) => {
@@ -231,7 +231,7 @@ const loadData = async () => {
 
       try {
         const manualSnapshot = await getDocs(collection(db, "presentes"));
-        currentDocs = manualSnapshot.docs;
+        currentDocs = manualSnapshot.docs.map((docItem) => ({ id: docItem.id, data: docItem.data() }));
         renderLista();
         setStatus("Lista carregada manualmente. Atualize a página para tentar realtime novamente.", "#2d8f2d");
       } catch (manualError) {
