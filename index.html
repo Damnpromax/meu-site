@@ -105,15 +105,14 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  onSnapshot, 
-  updateDoc 
+import {
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-// seu firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAZsS6apxe2WM03YEbEn3iorM4tmueVCd8",
   authDomain: "cha-de-casa-nova-ana-e-danniel.firebaseapp.com",
@@ -123,52 +122,95 @@ const firebaseConfig = {
   appId: "1:311408895947:web:39d42763dec314164c784e"
 };
 
-// inicia firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// onde vai aparecer a lista no HTML
 const lista = document.getElementById("lista");
+let selectedPresentId = null;
+let selectedPresentName = null;
+let currentDocs = [];
 
-console.log("Script carregado! Lista element:", lista);
+const renderLista = () => {
+  if (!lista) return;
 
-// 🔥 ESCUTA EM TEMPO REAL
-onSnapshot(collection(db, "presentes"), (snapshot) => {
-  console.log("Presentes atualizados:", snapshot.docs.length);
-  lista.innerHTML = "";
+  if (!currentDocs.length) {
+    lista.innerHTML = `<p style="text-align:center;color:#999;">Nenhum presente disponível.</p>`;
+    return;
+  }
 
-  snapshot.forEach((docItem) => {
-    const data = docItem.data();
-    console.log("Presente:", data.nome, "Reservado:", data.reservado);
+  lista.innerHTML = currentDocs
+    .map((docItem) => {
+      const data = docItem.data();
+      const isReserved = data.reservado === true;
+      const isSelected = selectedPresentId === docItem.id;
 
-    lista.innerHTML += `
-      <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:${data.reservado ? '#f0f0f0' : '#fff'};">
-        <p><strong>${data.nome}</strong></p>
-        <button style="padding:8px 16px;background:${data.reservado ? '#ccc' : '#c26a32'};color:white;border:none;border-radius:4px;cursor:${data.reservado ? 'not-allowed' : 'pointer'};font-weight:bold;" ${data.reservado ? "disabled" : ""} onclick="window.reservar('${docItem.id}', event)">
-          ${data.reservado ? "✓ Já escolhido" : "Escolher"}
-        </button>
-      </div>
-    `;
-  });
-});
+      if (isReserved) {
+        return `
+          <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#f0f0f0;">
+            <p><strong>${data.nome}</strong></p>
+            <button style="padding:8px 16px;background:#ccc;color:#555;border:none;border-radius:4px;cursor:not-allowed;font-weight:bold;" disabled>
+              ✓ Já escolhido
+            </button>
+          </div>
+        `;
+      }
 
-// 🔥 quando clicar no botão
-window.reservar = async (id, event) => {
-  event.preventDefault();
-  event.stopPropagation();
-  console.log("Clicou em:", id);
-  
+      if (isSelected) {
+        return `
+          <div style="padding:10px;border:2px solid #c26a32;margin:5px;border-radius:8px;background:#fff7ec;">
+            <p><strong>${data.nome}</strong></p>
+            <div style="display:flex;gap:10px;margin-top:10px;">
+              <button style="padding:8px 16px;background:#2d8f2d;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.confirmPresent('${docItem.id}')">
+                Confirmar presente
+              </button>
+              <button style="padding:8px 16px;background:#999;color:white;border:none;border-radius:4px;cursor:pointer;" onclick="window.cancelSelection()">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;background:#fff;">
+          <p><strong>${data.nome}</strong></p>
+          <button style="padding:8px 16px;background:#c26a32;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="window.selectPresent('${docItem.id}', ${JSON.stringify(data.nome)})">
+            Marcar para confirmar
+          </button>
+        </div>
+      `;
+    })
+    .join("");
+};
+
+window.selectPresent = (id, nome) => {
+  selectedPresentId = id;
+  selectedPresentName = nome;
+  renderLista();
+};
+
+window.cancelSelection = () => {
+  selectedPresentId = null;
+  selectedPresentName = null;
+  renderLista();
+};
+
+window.confirmPresent = async (id) => {
   const ref = doc(db, "presentes", id);
 
   try {
-    await updateDoc(ref, {
-      reservado: true
-    });
-    console.log("Presente reservado com sucesso!");
+    await updateDoc(ref, { reservado: true });
+    selectedPresentId = null;
+    selectedPresentName = null;
+    console.log(`Presentes reservado: ${id}`);
   } catch (error) {
-    console.error("Erro ao reservar:", error);
+    console.error("Erro ao confirmar presente:", error);
   }
 };
+
+onSnapshot(collection(db, "presentes"), (snapshot) => {
+  currentDocs = snapshot.docs;
+  renderLista();
+});
 </script>
 
 </body>
