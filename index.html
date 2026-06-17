@@ -111,6 +111,7 @@ import {
   collection,
   doc,
   onSnapshot,
+  getDocs,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -220,13 +221,23 @@ window.confirmPresent = async (id) => {
 const loadData = async () => {
   try {
     setStatus("Conectando ao Firestore...", "#333");
-    onSnapshot(collection(db, "presentes"), (snapshot) => {
+    onSnapshot(collection(db, "presentes"), async (snapshot) => {
       currentDocs = snapshot.docs;
       renderLista();
       setStatus("Lista de presentes carregada.", "#333");
-    }, (error) => {
-      setStatus("Não foi possível carregar em tempo real. Veja o console.", "#c0392b");
+    }, async (error) => {
+      setStatus("Não foi possível carregar em tempo real. Carregando lista manualmente...", "#c0392b");
       console.error("Erro onSnapshot:", error);
+
+      try {
+        const manualSnapshot = await getDocs(collection(db, "presentes"));
+        currentDocs = manualSnapshot.docs;
+        renderLista();
+        setStatus("Lista carregada manualmente. Atualize a página para tentar realtime novamente.", "#2d8f2d");
+      } catch (manualError) {
+        setStatus("Falha ao carregar dados manualmente. Veja o console.", "#c0392b");
+        console.error("Erro em getDocs:", manualError);
+      }
     });
   } catch (error) {
     setStatus("Erro ao conectar ao Firestore. Veja o console.", "#c0392b");
