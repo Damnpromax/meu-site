@@ -194,17 +194,6 @@ const renderLista = () => {
     })
     .join("");
 
-  lista.querySelectorAll('.select-button').forEach((button) => {
-    button.addEventListener('click', () => window.selectPresent(button.dataset.id));
-  });
-
-  lista.querySelectorAll('.confirm-button').forEach((button) => {
-    button.addEventListener('click', () => window.confirmPresent(button.dataset.id));
-  });
-
-  lista.querySelectorAll('.cancel-button').forEach((button) => {
-    button.addEventListener('click', () => window.cancelSelection());
-  });
 };
 
 const refreshData = async () => {
@@ -250,6 +239,25 @@ window.confirmPresent = async (id) => {
     console.error("Erro ao confirmar presente:", error);
   }
 };
+
+lista?.addEventListener('click', (event) => {
+  const target = event.target;
+  const selectButton = target.closest('.select-button');
+  const confirmButton = target.closest('.confirm-button');
+  const cancelButton = target.closest('.cancel-button');
+
+  if (selectButton) {
+    window.selectPresent(selectButton.dataset.id);
+  }
+
+  if (confirmButton) {
+    window.confirmPresent(confirmButton.dataset.id);
+  }
+
+  if (cancelButton) {
+    window.cancelSelection();
+  }
+});
 
 const loadData = async () => {
   try {
