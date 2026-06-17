@@ -154,14 +154,33 @@ const getPresentName = (data, id = "Presente") => {
   if (typeof data.name === "string" && data.name.trim()) return data.name.trim();
 
   const keys = Object.keys(data).filter((key) => key !== "reservado");
+  if (keys.length === 1) {
+    const key = keys[0];
+    const value = data[key];
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (trimmed === "" || trimmed.toLowerCase() === "false" || trimmed.toLowerCase() === "true") {
+        return key;
+      }
+      return trimmed;
+    }
+    if (value && typeof value.stringValue === "string") {
+      const trimmed = value.stringValue.trim();
+      if (trimmed === "" || trimmed.toLowerCase() === "false" || trimmed.toLowerCase() === "true") {
+        return key;
+      }
+      return trimmed;
+    }
+    return key;
+  }
+
   for (const key of keys) {
     const value = data[key];
     if (typeof value === "string" && value.trim()) return value.trim();
     if (value && typeof value.stringValue === "string" && value.stringValue.trim()) return value.stringValue.trim();
   }
 
-  if (keys.length === 1) return keys[0] || id;
-  if (keys.length > 1) return keys[0];
+  if (keys.length > 0) return keys[0];
   return id;
 };
 
