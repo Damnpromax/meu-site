@@ -133,6 +133,8 @@ const lista = document.getElementById("lista");
 const status = document.getElementById("status");
 const refreshButton = document.getElementById("refreshButton");
 let currentDocs = [];
+let selectedPresentId = null;
+let selectedPresentName = null;
 
 const setStatus = (message, color = "#333") => {
   if (!status) return;
