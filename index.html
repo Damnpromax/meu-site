@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chá de Casa Nova</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  
-<<script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import { 
   getFirestore, 
@@ -20,7 +8,7 @@ import {
   updateDoc 
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-// seu firebase config (ok)
+// seu firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAZsS6apxe2WM03YEbEn3iorM4tmueVCd8",
   authDomain: "cha-de-casa-nova-ana-e-danniel.firebaseapp.com",
@@ -45,13 +33,10 @@ onSnapshot(collection(db, "presentes"), (snapshot) => {
     const data = docItem.data();
 
     lista.innerHTML += `
-      <div style="padding:10px;border:1px solid #ccc;margin:5px;">
-        <p>${data.nome}</p>
-
-        <button ${data.reservado ? "disabled" : ""}
-          onclick="reservar('${docItem.id}')">
-
-          ${data.reservado ? "Já escolhido" : "Escolher"}
+      <div style="padding:10px;border:1px solid #ccc;margin:5px;border-radius:8px;">
+        <p><strong>${data.nome}</strong></p>
+        <button style="padding:8px 16px;background:${data.reservado ? '#ccc' : '#c26a32'};color:white;border:none;border-radius:4px;cursor:${data.reservado ? 'not-allowed' : 'pointer'}" ${data.reservado ? "disabled" : ""} onclick="window.reservar('${docItem.id}', event)">
+          ${data.reservado ? "✓ Já escolhido" : "Escolher"}
         </button>
       </div>
     `;
@@ -59,15 +44,33 @@ onSnapshot(collection(db, "presentes"), (snapshot) => {
 });
 
 // 🔥 quando clicar no botão
-window.reservar = async (id) => {
+window.reservar = async (id, event) => {
+  event.preventDefault();
   const ref = doc(db, "presentes", id);
 
-  await updateDoc(ref, {
-    reservado: true
-  });
+  try {
+    await updateDoc(ref, {
+      reservado: true
+    });
+    console.log("Presente reservado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao reservar:", error);
+  }
 };
 
 </script>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chá de Casa Nova</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 <div class="container">
 
   <header class="hero">
@@ -79,6 +82,13 @@ window.reservar = async (id) => {
       Escolha um presente abaixo para nos ajudar nessa nova fase ❤️
     </p>
   </header>
+
+  <section style="background:#fffdfb;border:2px solid #e7c7a4;border-radius:20px;padding:18px;margin-bottom:18px;">
+    <h3 style="color:#c26a32;margin-top:0;">🎁 Presentes da Lista</h3>
+    <div id="lista" style="display:flex;flex-direction:column;gap:10px;">
+      <p style="text-align:center;color:#999;">Carregando presentes...</p>
+    </div>
+  </section>
 
   <section class="categoria">
     <h3>🍳 COZINHA</h3>
@@ -155,20 +165,5 @@ window.reservar = async (id) => {
 
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import { getFirestore, collection, doc, getDocs, updateDoc, onSnapshot } 
-  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_PROJETO.firebaseapp.com",
-    projectId: "SEU_PROJECT_ID",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-</script>
