@@ -23,7 +23,6 @@
 
   <section style="background:#fffdfb;border:2px solid #e7c7a4;border-radius:20px;padding:18px;margin-bottom:18px;">
     <h3 style="color:#c26a32;margin-top:0;">🎁 Presentes da Lista</h3>
-    <div id="status" style="margin-bottom:12px;padding:10px;border-radius:10px;background:#f8f5ee;color:#333;border:1px solid #e5d3c3;">Carregando presentes...</div>
     <div id="lista" style="display:flex;flex-direction:column;gap:10px;">
       <p style="text-align:center;color:#999;">Carregando presentes...</p>
     </div>
@@ -126,16 +125,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const lista = document.getElementById("lista");
-const status = document.getElementById("status");
 let selectedPresentId = null;
 let selectedPresentName = null;
 let currentDocs = [];
-
-const setStatus = (message, color = "#333") => {
-  if (!status) return;
-  status.textContent = message;
-  status.style.color = color;
-};
 
 const renderLista = () => {
   if (!lista) return;
@@ -209,32 +201,16 @@ window.confirmPresent = async (id) => {
     await updateDoc(ref, { reservado: true });
     selectedPresentId = null;
     selectedPresentName = null;
-    setStatus("Presente confirmado! Atualizando...", "#2d8f2d");
-    console.log(`Presente reservado: ${id}`);
+    console.log(`Presentes reservado: ${id}`);
   } catch (error) {
-    setStatus("Erro ao confirmar presente. Veja o console.", "#c0392b");
     console.error("Erro ao confirmar presente:", error);
   }
 };
 
-const loadData = async () => {
-  try {
-    setStatus("Conectando ao Firestore...", "#333");
-    onSnapshot(collection(db, "presentes"), (snapshot) => {
-      currentDocs = snapshot.docs;
-      renderLista();
-      setStatus("Lista de presentes carregada.", "#333");
-    }, (error) => {
-      setStatus("Não foi possível carregar em tempo real. Veja o console.", "#c0392b");
-      console.error("Erro onSnapshot:", error);
-    });
-  } catch (error) {
-    setStatus("Erro ao conectar ao Firestore. Veja o console.", "#c0392b");
-    console.error("Erro ao inicializar conexão:", error);
-  }
-};
-
-loadData();
+onSnapshot(collection(db, "presentes"), (snapshot) => {
+  currentDocs = snapshot.docs;
+  renderLista();
+});
 </script>
 
 </body>
